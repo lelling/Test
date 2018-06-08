@@ -1,13 +1,16 @@
-package org.util;
+package com.lel.utils;
 
+/**
+ * 通用返回结果
+ * @author lel
+ * @param <T>
+ */
 public class Result<T> implements java.io.Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1844559448210088748L;
-	
-	private static final String S_FAIL_LOGIN = "-2";
 	
 	public static final String S_FAIL = "0";
 	
@@ -68,10 +71,6 @@ public class Result<T> implements java.io.Serializable{
 		this.msg = msg;
 	}
 	
-	public void failLogin(String msg){
-		fail(S_FAIL_LOGIN, msg);
-	}
-	
 	public void fail(String msg){
 		fail(S_FAIL, msg);
 	}
@@ -98,6 +97,5 @@ public class Result<T> implements java.io.Serializable{
 		}
 		return false;
 	}
-	
 	
 }
