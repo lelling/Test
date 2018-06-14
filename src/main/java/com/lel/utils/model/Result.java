@@ -1,4 +1,4 @@
-package com.lel.utils;
+package com.lel.utils.model;
 
 /**
  * 通用返回结果
