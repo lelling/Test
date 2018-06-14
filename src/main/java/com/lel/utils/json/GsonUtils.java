@@ -25,7 +25,6 @@ public class GsonUtils {
 	 */
 	public static Gson getIgnoreGsonByFiledNames(final String... filedNames ){
 		Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {  
-            @Override  
             public boolean shouldSkipField(FieldAttributes f) {
             	if (null == filedNames) {
 					return false;
@@ -38,7 +37,6 @@ public class GsonUtils {
             	}
                 return false;  
             }  
-            @Override  
             public boolean shouldSkipClass(Class<?> clazz) {
 				return false;  
 //                //过滤掉 类名包含 Bean的类  
