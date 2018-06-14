@@ -39,7 +39,7 @@ public class ValidatorUtils {
 	 * @return
 	 */
 	private static <T> Result<Set<ConstraintViolation<T>>> validate(T obj, boolean failFast,  Class<?>... groups) {
-		Result<Set<ConstraintViolation<T>>> result = new Result<>();
+		Result<Set<ConstraintViolation<T>>> result = new Result<Set<ConstraintViolation<T>>>();
 		if (obj.getClass().isPrimitive()) {
 			// 基本类型
 			result.fail("基本类型不予检查");
@@ -109,8 +109,8 @@ public class ValidatorUtils {
 	 * @return
 	 */
 	private static <T> Result<List<String>> coverResult(Result<Set<ConstraintViolation<T>>> validate){
-		Result<List<String>> result = new Result<>();
-		List<String> list = new ArrayList<>();
+		Result<List<String>> result = new Result<List<String>>();
+		List<String> list = new ArrayList<String>();
 		if (validate == null) {
 			result.fail("校验结果为空");
 			return result;
