@@ -13,6 +13,11 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
+/**
+ * 自定义枚举类型校验
+ * @author lel
+ *
+ */
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValue.Validator.class)
@@ -27,6 +32,11 @@ public @interface EnumValue {
 	
 	String enumMethod();
 	
+	/**
+	 * 枚举值类型校验
+	 * @author lel
+	 *
+	 */
 	class Validator implements ConstraintValidator<EnumValue, Object>{
 		
 		private Class<? extends Enum<?>> enumClass;
