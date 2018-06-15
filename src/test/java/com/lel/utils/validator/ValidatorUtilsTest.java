@@ -11,12 +11,12 @@ import com.lel.utils.model.Result;
 import com.lel.utils.validator.model.User;
 
 /**
- * 参数校验<br>
+ * hibernate-validator类属性校验<br>
  * 场景:
- * 1-常规校验(单属性校验：非空，长度（范围），取值范围，正则表达)<br>
- * 2-组合校验(依赖校验：某个字段值为特定值时，校验指定字段; 关联校验：字段A和字段B中必须有一个非空)<br>
- * 3-枚举值校验
- * 其他-字段允许为空，但非空时必须符合指定规则
+ * 1-常规校验(单属性校验：非空，长度（范围），取值范围，正则表达)【ok】<br>
+ * 2-组合校验(依赖校验：某个字段值为特定值时，校验指定字段; 关联校验：字段A和字段B中必须有一个非空)【ok-@AssertTrue】<br>
+ * 3-枚举值校验【ok】<br>
+ * 其他-字段允许为空，但非空时必须符合指定规则【ok】<br>
  * @author lel
  */
 public class ValidatorUtilsTest {
@@ -27,7 +27,7 @@ public class ValidatorUtilsTest {
 //		user.setName("lel");
 		user.setPassword("1235");
 		user.setAge(18);
-		user.setMail("1156677011@.com");
+//		user.setMail("1156677011@.com");
 		List<User> children = new ArrayList<>();
 		children.add(new User());
 //		children.add(new User());

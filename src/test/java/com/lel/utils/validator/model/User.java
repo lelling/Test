@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -77,15 +79,42 @@ public class User implements Serializable{
 	private String mail;
 	
 	/**
+	 * 与[邮箱]配合做组合校验<br>
+	 */
+	@Pattern(message="无效手机号码", regexp="^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$")
+	private String phone;
+	/**
 	 * 
 	 */
 	@Range(message = "工作年限越界", min = 2, max = 10)
 	private Integer workYears;
 	
+	/**
+	 * @EnumValue 为自定义注解，可用  @AssertTrue 替代（但@AssertTrue会使实体类额外增加方法，显得冗余）<br>
+	 */
 	@EnumValue(enumClass = StatusEnum.class, enumMethod = "isValidKey", message = "无效状态")
 	@NotEmpty(message = "状态为空")
 	private String status;
 	
+	/**
+	 * 字段关联校验-手机号和邮箱必填一个<br>
+	 */
+	@AssertTrue(message="手机号和邮箱必填其中之一")
+	public boolean hasPhoneOrEmail(){
+		if (StringUtils.isNotEmpty(phone) || StringUtils.isNotEmpty(mail)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public Integer getWorkYears() {
 		return workYears;
 	}
@@ -158,6 +187,9 @@ public class User implements Serializable{
 		this.pUser = pUser;
 	}
 	
+	/**
+	 * 状态枚举类型<br>
+	 */
 	public enum StatusEnum{
 		NORMAL("1","正常"),
 		DISABLED("0", "失效");
