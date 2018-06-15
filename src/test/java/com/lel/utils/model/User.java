@@ -21,12 +21,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 import com.lel.utils.validator.anno.EnumValue;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 示例用户类<br>
  * @author lel
  *
  */
+@XStreamAlias("user")
 public class User implements Serializable{
 	
 	/**

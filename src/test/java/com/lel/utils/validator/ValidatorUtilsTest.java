@@ -25,9 +25,10 @@ public class ValidatorUtilsTest {
 	
 	/**
 	 * 数据源1-直接new对象<br>
+	 * 【注意】非本类调用本类的数据源时，该方法必须为static，否则外部类无法访问； 本类自己调用可为非static<br>
 	 */
 	@DataProvider(name = "normalUser")
-	public Object[][] createUser(){
+	public static Object[][] createUser(){
 		User user = new User();
 //		user.setName("lel");
 		user.setPassword("1235");
@@ -39,7 +40,7 @@ public class ValidatorUtilsTest {
 		user.setChildren(children);
 		user.setStatus("2");
 		return new Object[][] {
-		      new Object[] { user}
+		     { user}
 	    };
 	}
 	

@@ -133,7 +133,7 @@ public class ValidatorUtils {
 	 * @param objs
 	 * @return
 	 */
-	private static boolean isEmptyArr(Object... objs){
+	public static boolean isEmptyArr(Object... objs){
 		if (null == objs || objs.length == 0) {
 			return true;
 		}

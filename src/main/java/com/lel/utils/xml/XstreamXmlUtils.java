@@ -1,5 +1,7 @@
 package com.lel.utils.xml;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.thoughtworks.xstream.XStream;
@@ -48,4 +50,17 @@ public class XstreamXmlUtils {
 		return (T) oXstream.fromXML(xml);
 	}
 	
+	/**
+	 * 文件直转对象<br>
+	 * @param xmlFile
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T toBeanFromFile(String xmlFile, Class<T> clazz){
+		if (StringUtils.isEmpty(xmlFile)) {
+			return null;
+		}
+		oXstream.processAnnotations(clazz);
+		return (T) oXstream.fromXML(new File(xmlFile));
+	}
 }

@@ -1,5 +1,10 @@
 package com.lel.utils.json;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -7,12 +12,28 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 /**
  * json转换<br>
+ * 【使用】
+ * 1-创建默认配置选项，直接Gson gson = new Gson();<br>
+ * 2-创建自定义配置选项，Gson gson = new GsonBuilder().serializeNulls().create(); <br>
+ * 可创建如下类型：
+ * Gson gson = new GsonBuilder()
+         .excludeFieldsWithoutExposeAnnotation() // 不对没有用@Expose注解的属性进行操作
+         .enableComplexMapKeySerialization() // 当Map的key为复杂对象时,需要开启该方法
+         .serializeNulls() // 当字段值为空或null时，依然对该字段进行转换
+         .setDateFormat("yyyy-MM-dd HH:mm:ss:SSS")  //时间转化为特定格式
+         .setPrettyPrinting()  //对结果进行格式化，增加换行
+         .disableHtmlEscaping()  //防止特殊字符出现乱码
+         .registerTypeAdapter(User.class,new UserAdapter())  //为某特定对象设置固定的序列或反序列方式，自定义Adapter需实现JsonSerializer或者JsonDeserializer接口
+         .create();
+ * Gson的注解： @Expose，包含serialize和deserialize属性是可选的，默认两个都为true
+ * 【注意】 直接new Gson时， @Expose 无效，此时可用@SerializedName 指定名称
  * @author lel
- *
  */
 public class GsonUtils {
 	
@@ -86,4 +107,23 @@ public class GsonUtils {
 		return gson.fromJson(json, new TypeToken<List<T>>(){}.getType());
 	}
 	
+	/**
+	 * 从文件直接读取json
+	 * @param filePath
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T fromJsonByFile(String filePath, Class<T> clazz) {
+		try {
+			FileInputStream in = new FileInputStream(filePath);
+			Reader reader = new InputStreamReader(in, "UTF-8");
+			return gson.fromJson(reader, clazz);
+		} catch (JsonSyntaxException | JsonIOException  e) {
+			throw new RuntimeException("json解析异常");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("无效文件路径");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("不支持的编码格式");
+		}
+	}
 }
