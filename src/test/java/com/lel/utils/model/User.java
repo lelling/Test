@@ -1,4 +1,4 @@
-package com.lel.utils.validator.model;
+package com.lel.utils.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +22,11 @@ import org.hibernate.validator.constraints.Range;
 
 import com.lel.utils.validator.anno.EnumValue;
 
+/**
+ * 示例用户类<br>
+ * @author lel
+ *
+ */
 public class User implements Serializable{
 	
 	/**
