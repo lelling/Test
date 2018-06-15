@@ -22,6 +22,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValue.Validator.class)
 public @interface EnumValue {
+	
 	String message() default "{custom.value.invalid}";
 	
 	Class<?>[] groups() default {};
