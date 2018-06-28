@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<root>
+	<testInt>
+		<i>1</i>
+	</testInt>
+	
+	<testUser>
+		<user>
+			<name></name>
+			<password></password>
+		</user>
+	</testUser>
+</root>
