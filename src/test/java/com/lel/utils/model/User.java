@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 import com.lel.utils.validator.anno.EnumValue;
@@ -48,14 +47,15 @@ public class User implements Serializable{
 	 * @Size 非空时，判断list大小；空时，无效
 	 */
 	// @NotEmpty(message = "丢失子级用户信息")
-	@Size(min = 2, message = "至少包含2个子用户")
+	// @Valid
+	@Size(min = 2, message = "至少包含{min}个子用户")
 	private List<User> children;
 	/**
 	 * 非空
 	 * @Length 非空时的长度限制
 	 */
 	@NotBlank(message = "姓名非空")
-	@Length(min = 6, max = 20, message = "姓名长度范围为[6,20]")
+	@Length(min = 6, max = 20, message = "姓名长度范围为[{min},{max}]")
 	private String name;
 	
 	/**
@@ -75,8 +75,8 @@ public class User implements Serializable{
 	 * 此处不允许为空，空时按0处理；
 	 * 非空时，处理同@DecimalMin
 	 */
-	@Min(message="年龄必须大于18", value = 18)
-	@Max(message="年龄必须小于70", value = 70)
+	@Min(message="年龄必须大于{value}", value = 18)
+	@Max(message="年龄必须小于{value}", value = 70)
 	private int age;
 	
 	/**
@@ -100,7 +100,7 @@ public class User implements Serializable{
 	 * @EnumValue 为自定义注解，可用  @AssertTrue 替代（但@AssertTrue会使实体类额外增加方法，显得冗余）<br>
 	 */
 	@EnumValue(enumClass = StatusEnum.class, enumMethod = "isValidKey", message = "无效状态")
-	@NotEmpty(message = "状态为空")
+//	@NotEmpty(message = "状态为空")
 	private String status;
 	
 	/**
@@ -111,7 +111,9 @@ public class User implements Serializable{
 		if (StringUtils.isNotEmpty(phone) || StringUtils.isNotEmpty(mail)) {
 			return true;
 		}
-		return false;
+		//return false;
+		
+		return StatusEnum.isValidKey(status);
 	}
 	
 	public String getPhone() {

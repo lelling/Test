@@ -5,7 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.ExclusionStrategy;
@@ -14,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * json转换<br>
@@ -98,15 +100,85 @@ public class GsonUtils {
 		return gson.fromJson(json, typeOfT);
 	}
 	/**
-	 * 获取list
+	 * 获取数组Arr
+	 * @param json
+	 * @param clazzArr  泛型数组
+	 * @return
+	 */
+	public static <T> T[] fromJsonArr(String json, Class<T[]> clazzArr){
+		return gson.fromJson(json, clazzArr);
+	}
+	
+	/**
+	 * 获取数组Arr
+	 * @param json
+	 * @param itemClazz
+	 * @return
+	 */
+	public static <T> T[] fromJsonArrByItem(String json, Class<T> itemClazz){
+		return gson.fromJson(json, Array.newInstance(itemClazz, 0).getClass());
+	}
+	/**
+	 * 指定元素类型，获取列表list<br>
+	 * 【注意】先将json报文转为数组，通过Arrays转为数组（Array.asList方法转换后的数组不可操作，估需要new Arraylist<>做转换）
 	 * @param json
 	 * @param itemClazz  list内泛型
 	 * @return
 	 */
-	public static <T> List<T> fromJsonList(String json, Class<T> itemClazz){
-		return gson.fromJson(json, new TypeToken<List<T>>(){}.getType());
+	public static <T> List<T>fromJsonList(String json, Class<T> itemClazz){
+		T[] arr = fromJsonArrByItem(json, itemClazz);
+		return new ArrayList<T>(Arrays.asList(arr));
+	}
+	/**
+	 * 从文件直接读取json
+	 * @param filePath
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T fromJsonByFile(String filePath, Type typeOfT) {
+		try {
+			FileInputStream in = new FileInputStream(filePath);
+			Reader reader = new InputStreamReader(in, "UTF-8");
+			return gson.fromJson(reader, typeOfT);
+		} catch (JsonSyntaxException | JsonIOException  e) {
+			throw new RuntimeException("json解析异常");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("无效文件路径");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("不支持的编码格式");
+		}
 	}
 	
+	/**
+	 * 从文件直接读取json
+	 * @param filePath
+	 * @param itemClazz
+	 * @return
+	 */
+	public static <T> List<T> fromJsonByFileToList(String filePath, Class<T> itemClazz) {
+		T[] arr = fromJsonByFileToArr(filePath, itemClazz);
+		return new ArrayList<T>(Arrays.asList(arr));
+	}
+	/**
+	 * 从文件直接读取json
+	 * @param filePath
+	 * @param itemClazz
+	 * @return
+	 */
+	public static <T> T[] fromJsonByFileToArr(String filePath, Class<T> itemClazz) {
+		try {
+			FileInputStream in = new FileInputStream(filePath);
+			Reader reader = new InputStreamReader(in, "UTF-8");
+			T[] arr = gson.fromJson(reader, Array.newInstance(itemClazz, 0).getClass());
+			return arr;
+		} catch (JsonSyntaxException | JsonIOException  e) {
+			throw new RuntimeException("json解析异常");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("无效文件路径");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("不支持的编码格式");
+		}
+	}
 	/**
 	 * 从文件直接读取json
 	 * @param filePath
