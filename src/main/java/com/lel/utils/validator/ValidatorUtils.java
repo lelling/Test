@@ -130,7 +130,6 @@ public class ValidatorUtils {
 	/**
 	 * 判断数组是否为空
 	 * @param objs
-	 * @return
 	 */
 	public static boolean isEmptyArr(Object... objs){
 		if (null == objs || objs.length == 0) {
