@@ -47,6 +47,7 @@ public class GsonUtils {
 	 * @return
 	 */
 	public static Gson getIgnoreGsonByFiledNames(final String... filedNames ){
+	public static Gson getIgnoreGsonByFiledNames(final String... filedNames ){
 		Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
 			@Override
             public boolean shouldSkipField(FieldAttributes f) {
@@ -163,7 +164,6 @@ public class GsonUtils {
 	 * 从文件直接读取json
 	 * @param filePath
 	 * @param itemClazz
-	 * @return
 	 */
 	public static <T> T[] fromJsonByFileToArr(String filePath, Class<T> itemClazz) {
 		try {

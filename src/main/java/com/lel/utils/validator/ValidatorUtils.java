@@ -18,7 +18,6 @@ import com.lel.utils.model.Result;
  * 参数校验类<br>
  * 可指定分组；若目标类未被多次校验使用，建议不指定分组（目标类字段注解中不要使用groups）<br>
  * @author lel
- *
  */
 public class ValidatorUtils {
 	
